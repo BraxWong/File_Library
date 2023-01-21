@@ -23,8 +23,15 @@ namespace file {
 
     void print_row(void* fileName, int row);
 
+    //@find_word()
+    //@param: std::string fileName, target
+    //@return: true(target is found), false(target isn't found)
+    //@description: First, it will cast all the parameters into string*, then it will use
+    //stringstream objects to cast it into a string. Then it will use a fstream object to 
+    //open the file. It will traverse the entire file until it either finds the target_word,
+    //or it has reached the end of the file without finding the target_word.
 
-    void add(int a, int b);
+    bool find_word(void* fileName,void* target);
 
 }
 #endif
