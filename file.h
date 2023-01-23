@@ -6,21 +6,21 @@
 #include <stdio.h>
 #include <fstream>
 #include <sstream>
-#include <string.h>
+#include <string>
 namespace file {
     //@print_file()
     //@param: std::string fileName
     //@description: Takes in a fileName as a parameter, then it will read the file and
     //prints out everything within the file.
 
-    void print_file(void* fileName);
+    void print_file(std::string fileName);
 
     //@print_row()
     //@param: std::string fileName, int row
     //@description: Takes in a fileName and row number as parameters, then it will read
     //the file and prints out the content within the row number.
 
-    void print_row(void* fileName, int row);
+    void print_row(std::string fileName, int row);
 
     //@find_word()
     //@param: std::string fileName, target
@@ -30,7 +30,7 @@ namespace file {
     //open the file. It will traverse the entire file until it either finds the target_word,
     //or it has reached the end of the file without finding the target_word.
 
-    bool find_word(void* fileName,void* target);
+    bool find_word(std::string fileName,std::string target);
 
     //@find_sentence()
     //@param: std::string fileName, target
@@ -41,6 +41,6 @@ namespace file {
     //open the file. It will traverse the entire file until it either finds the target_word,
     //or it has reached the end of the file without finding the target_word.
 
-    bool find_sentence(void* fileName, void* target);
+    bool find_sentence(std::string fileName, std::string target);
 }
 #endif
