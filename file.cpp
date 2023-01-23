@@ -125,13 +125,61 @@ namespace file {
 
     }
 
+   bool find_word(std::string fileName, std::string target) {
+
+        std::string fileType, line, word;
+        std::cout << "What type of file is it? (txt, csv, etc?)\n";
+        std::getline(std::cin,fileType);
+
+        //Checks if the user input is missing a '.'
+        if(fileType[0] != '.'){
+
+            fileType = '.' + fileType;
+            std::cout << fileType << std::endl;
+
+        }
+        std::fstream file;
+        file.open(fileName + fileType,std::ios::in);
+
+        while(file.good()){
+    
+            std::getline(file,line);
+            std::stringstream s(line);
+
+            while(std::getline(s,word,' ')){
+
+                if(word == target){
+            
+                    std::cout << target << " is found\n";
+                    return true;
+
+                }
+
+            }
+
+        }
+      
+        std::cout << target << " is not found\n";
+        return false;
+
+    }
+
+    bool find_sentence(void* fileName, void* target){
+      std::string* ptr1 = static_cast<std::string*> (fileName), *ptr2 = static_cast<std::string*> (target);
+      std::stringstream ss1, ss2;
+      ss1 << *ptr1;
+      ss2 << *ptr2;
+      std::string fn = ss1.str(), target_sentence = ss2.str();
+      int sentenceCounter = target_sentence.length();
+      std::cout << sentenceCounter << "\n";
+      return true;
+    }
+
 }
 
 int main() {
     std::string arg = "Check";
-    std::string arg2 = "Blah";
-    //file::print_file(static_cast<void*>(&arg));
-    //file::print_row(static_cast<void*>(&arg),4);
-    file::find_word(static_cast<void*>(&arg),static_cast<void*>(&arg2));
+    std::string arg2 = "Blah hello from the other side";
+    file::find_sentence(static_cast<void*>(&arg),static_cast<void*>(&arg2));
     return 0;
 }
