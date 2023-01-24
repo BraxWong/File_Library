@@ -15,7 +15,6 @@ namespace file {
         if(fileType[0] != '.'){
 
             fileType = '.' + fileType;
-            std::cout << fileType << std::endl;
 
         }
 
@@ -50,7 +49,6 @@ namespace file {
         if(fileType[0] != '.'){
 
             fileType = '.' + fileType;
-            std::cout << fileType << std::endl;
 
         }
 
@@ -83,7 +81,6 @@ namespace file {
         if(fileType[0] != '.'){
 
             fileType = '.' + fileType;
-            std::cout << fileType << std::endl;
 
         }
         std::fstream file;
