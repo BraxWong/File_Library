@@ -8,19 +8,22 @@
 #include <sstream>
 #include <string>
 namespace file {
+
     //@print_file()
     //@param: std::string fileName
+    //@return: true(if the file exists), false (if the file does not exist)
     //@description: Takes in a fileName as a parameter, then it will read the file and
     //prints out everything within the file.
-
-    void print_file(std::string fileName);
+     
+    bool print_file(std::string fileName);
 
     //@print_row()
     //@param: std::string fileName, int row
+    //@return: true(if the file exists), false(if the file does not exist)
     //@description: Takes in a fileName and row number as parameters, then it will read
     //the file and prints out the content within the row number.
-
-    void print_row(std::string fileName, int row);
+    
+    bool print_row(std::string fileName, int row);
 
     //@find_word()
     //@param: std::string fileName, target
@@ -42,5 +45,10 @@ namespace file {
     //or it has reached the end of the file without finding the target_word.
 
     bool find_sentence(std::string fileName, std::string target);
+
+    //@createNewFile()
+    //@param: std::string fileName
+    //@return: true(file is able to be created), false(fileName contains illegal characters)
+    bool createNewFile(std::string fileName);
 }
 #endif

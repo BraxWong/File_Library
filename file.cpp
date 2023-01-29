@@ -3,7 +3,7 @@ using namespace file;
 
 namespace file {
 
-    void print_file(std::string fileName){
+    bool print_file(std::string fileName){
 
         
         std::string fileType, line, word;
@@ -22,6 +22,13 @@ namespace file {
         std::fstream file;
         file.open(fileName + fileType,std::ios::in);
 
+        //Check if the file exists or not
+        if(!file.good()){
+
+            return false;
+
+        }
+
         while(file.good()){
 
             std::getline(file,line);
@@ -34,10 +41,13 @@ namespace file {
             }
 
         }
+        
+        //Operation complete
+        return true;
 
     }
 
-    void print_row(std::string fileName, int row){
+    bool print_row(std::string fileName, int row){
 
         std::string fileType, line, word;
         int rowCount = 0;
@@ -55,6 +65,13 @@ namespace file {
         std::fstream file;
         file.open(fileName + fileType,std::ios::in);
 
+        //Check if the file exists or not
+        if(!file.good()){
+
+            return false;
+
+        }
+
         while(file.good()){
 
             std::getline(file,line);
@@ -68,6 +85,9 @@ namespace file {
             }
 
         }
+
+        //Operation complete  
+        return true;
 
     }
 
@@ -115,11 +135,34 @@ namespace file {
       return true;
     }
 
+    bool createNewFile(std::string fileName) {
+        
+        char illegalChar[] = {'#','%','&','{','}','<','>','*','?','/',' ','$','!',':','@','+','`','|','=','"'};
+        //Checks for illegal character within the file name
+        for(int i = 0; i < 19; ++i){
+          for(unsigned long j = 0; j < fileName.length(); ++j) {
+            if(fileName[j] == illegalChar[i]){
+              std::cout << "Error: Illegal character detected. " << illegalChar[i] << " is not allowed in the file name.\n";
+              return false;
+            }
+          }
+        }
+        //Checks for special rules
+        if(fileName[0] == ' ' | fileName[fileName.length()] == ' ' | fileName[0] == '.' | fileName[fileName.length()] == '.' | fileName[0] == '-' | fileName[fileName.length()] == '-' | fileName[0] == '_' | fileName[fileName.length()] == '_' ){
+          std::cout << "Space, period, hyphen, or underline is detected at the start or end of filename.\n";
+          return false;
+        }
+        //Creates the file
+        std::ofstream newFile(fileName);
+        newFile.close();
+        return true;
+    }
+
 }
 
 int main() {
-    std::string arg = "Check";
-    std::string arg2 = "Blah hello from the other side";
-    file::find_sentence(arg,arg2);
+
+    file::createNewFile("something.txt");
     return 0;
+
 }
