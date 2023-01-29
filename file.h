@@ -50,6 +50,19 @@ namespace file {
     //@createNewFile()
     //@param: std::string fileName
     //@return: true(file is able to be created), false(fileName contains illegal characters)
+    //@description: First, it will check for illegal character within the file name. If an illegal character or 
+    //rules are found, the function will return false. Then it will create a new file using the ofstream object, 
+    //the file will be placed in the project directory. The ofstream object will be closed at the end, thus returning 
+    //true for signaling the completion of the function.
     bool createNewFile(std::string fileName);
+
+    //@checkFileType()
+    //@param: std::string fileName
+    //@return: std::string fileName
+    //@description: It will ask for the type of file through user input. Then it will check whether the first index
+    //of the user input is '.', if so, it will return the fileName + user input. Or else, it will add the '.' into the 
+    //user input. It will then return the fileName + user input.
+
+    std::string checkFileType(std::string fileName);
 }
 #endif

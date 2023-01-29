@@ -6,21 +6,13 @@ namespace file {
     bool print_file(std::string fileName){
 
         
-        std::string fileType, line, word;
+        std::string line, word;
 
-        std::cout << "What type of file is it? (txt, csv, etc?)\n";
-        std::getline(std::cin,fileType);
-
-        //Checks if the user input is missing a '.'
-        if(fileType[0] != '.'){
-
-            fileType = '.' + fileType;
-
-        }
+        std::string fn = checkFileType(fileName); 
 
 
         std::fstream file;
-        file.open(fileName + fileType,std::ios::in);
+        file.open(fn,std::ios::in);
 
         //Check if the file exists or not
         if(!file.good()){
@@ -49,21 +41,13 @@ namespace file {
 
     bool print_row(std::string fileName, int row){
 
-        std::string fileType, line, word;
+        std::string fn, line, word;
         int rowCount = 0;
 
-        std::cout << "What type of file is it? (txt, csv, etc?)\n";
-        std::getline(std::cin,fileType);
-
-        //Checks if the user input is missing a '.'
-        if(fileType[0] != '.'){
-
-            fileType = '.' + fileType;
-
-        }
+        fn = checkFileType(fileName); 
 
         std::fstream file;
-        file.open(fileName + fileType,std::ios::in);
+        file.open(fn,std::ios::in);
 
         //Check if the file exists or not
         if(!file.good()){
@@ -93,18 +77,10 @@ namespace file {
 
        bool find_word(std::string fileName, std::string target) {
 
-        std::string fileType, line, word;
-        std::cout << "What type of file is it? (txt, csv, etc?)\n";
-        std::getline(std::cin,fileType);
-
-        //Checks if the user input is missing a '.'
-        if(fileType[0] != '.'){
-
-            fileType = '.' + fileType;
-
-        }
+        std::string fn, line, word;
+        fn = checkFileType(fileName);
         std::fstream file;
-        file.open(fileName + fileType,std::ios::in);
+        file.open(fn ,std::ios::in);
 
         while(file.good()){
     
@@ -200,11 +176,27 @@ namespace file {
         return true;
     }
 
+    std::string checkFileType(std::string fileName){
+
+        std::string fileType;
+        std::cout << "What type of file is it? (txt, csv, etc?)\n";
+        std::getline(std::cin,fileType);
+
+        //Checks if the user input is missing a '.'
+        if(fileType[0] != '.'){
+
+            fileType = '.' + fileType;
+
+        }
+        
+        return fileName + fileType;
+
+    }
 }
 
 int main() {
 
-    file::find_sentence("Check","123 23 1231293821");
+    file::print_file("Check.txt");
     return 0;
 
 }
