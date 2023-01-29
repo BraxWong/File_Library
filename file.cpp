@@ -130,9 +130,51 @@ namespace file {
     }
 
     bool find_sentence(std::string fileName, std::string target){
-      int sentenceCounter = target.length();
-      std::cout << sentenceCounter << " " << fileName << "\n";
-      return true;
+      //Storing the sentence into a vector of string
+      std::vector<std::string> targetVector;
+      std::stringstream ss(target);
+      std::string word1;
+      while(ss >> word1){
+        targetVector.push_back(word1);
+      }
+
+      std::string fileType, line, word;
+      int count = 0;
+      std::cout << "What type of file is it? (txt, csv, etc?)\n";
+      std::getline(std::cin,fileType);
+
+      //Checks if the user input is missing a '.'
+      if(fileType[0] != '.'){
+
+        fileType = '.' + fileType;
+
+      }
+      std::fstream file;
+      file.open(fileName + fileType,std::ios::in);
+
+      while(file.good()){
+    
+        std::getline(file,line);
+        std::stringstream s(line);
+
+            while(std::getline(s,word,' ')){
+                if(word == targetVector[count]){
+                    count++;
+                    if(count == static_cast<int> (targetVector.size())) {
+                      std::cout << target << " is found\n";
+                      return true;
+                    }
+                }
+
+                else {
+                    count = 0;
+                }
+
+            }
+
+      }
+      std::cout << target << " is not found\n";
+      return false;
     }
 
     bool createNewFile(std::string fileName) {
@@ -162,7 +204,7 @@ namespace file {
 
 int main() {
 
-    file::createNewFile("something.txt");
+    file::find_sentence("Check","123 23 1231293821");
     return 0;
 
 }
