@@ -166,7 +166,7 @@ namespace file {
           }
         }
         //Checks for special rules
-        if(fileName[0] == ' ' | fileName[fileName.length()] == ' ' | fileName[0] == '.' | fileName[fileName.length()] == '.' | fileName[0] == '-' | fileName[fileName.length()] == '-' | fileName[0] == '_' | fileName[fileName.length()] == '_' ){
+        if(fileName[0] == ' ' || fileName[fileName.length()] == ' ' || fileName[0] == '.' || fileName[fileName.length()] == '.' || fileName[0] == '-' || fileName[fileName.length()] == '-' || fileName[0] == '_' || fileName[fileName.length()] == '_' ){
           std::cout << "Space, period, hyphen, or underline is detected at the start or end of filename.\n";
           return false;
         }
@@ -192,11 +192,21 @@ namespace file {
         return fileName + fileType;
 
     }
+
+    bool checkFileExists(std::string fileName){
+
+        fileName = checkFileType(fileName);
+        std::ifstream file(fileName);
+        if(file.good()){
+            return true;
+        }
+        return false;
+    }
 }
 
 int main() {
 
-    file::print_file("Check.txt");
+    std::cout <<  file::checkFileExists("Check") << "\n";
     return 0;
 
-}
+} 

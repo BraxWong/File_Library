@@ -64,5 +64,13 @@ namespace file {
     //user input. It will then return the fileName + user input.
 
     std::string checkFileType(std::string fileName);
+
+    //@checkFileExists
+    //@param: std::string fileName
+    //@return: true(if the file exists), false(if the file does not exist)
+    //@description: The fileName parameter will be passed into checkFileType, which will ask for the file type from the user,
+    //and it will return the fileName string. An ifstream object will be created by passing in the fileName parameter. Then ifstream.good()
+    //will be used to check if the file exists or not. Return the true if the file exists, false if the file does not exists.
+    bool checkFileExists(std::string fileName);
 }
 #endif
