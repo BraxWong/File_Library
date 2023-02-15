@@ -248,12 +248,24 @@ namespace file {
       file << str;
       return true;
     }
+
+
+    bool append_to_file(std::string fileName, std::string str){
+      fileName = checkFileType(fileName);
+      std::ofstream ofile;
+      ofile.open(fileName, std::ios::app);
+      ofile << str;
+      ofile.close();
+      std::cout << str << "\nHas been appended to file " << fileName << " successfully.\n";
+      return true;
+    }
 }
 
 int main() {
 
     //std::cout <<  file::find_and_replace("Check","123","456") << "\n";
-    std::cout << file::write_to_file("Check","Bskdlajfkjdhasfjdasjfhdasjfjdsah");
+    //std::cout << file::write_to_file("Check","Bskdlajfkjdhasfjdasjfhdasjfjdsah");
+    file::append_to_file("Check", "Hi My name is what?");
     return 0;
 
 } 

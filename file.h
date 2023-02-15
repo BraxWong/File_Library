@@ -65,7 +65,7 @@ namespace file {
 
     std::string checkFileType(std::string fileName);
 
-    //@checkFileExists
+    //@checkFileExists()
     //@param: std::string fileName
     //@return: true(if the file exists), false(if the file does not exist)
     //@description: The fileName parameter will be passed into checkFileType, which will ask for the file type from the user,
@@ -76,7 +76,7 @@ namespace file {
 
     bool find_and_replace(std::string fileName, std::string origin, std::string replacement);
 
-    //@write_to_file
+    //@write_to_file()
     //@param: std::string fileName, std::string str
     //@return: true(Always)
     //@description: The fileName will be modified by using checkFileType helper function.
@@ -84,5 +84,14 @@ namespace file {
     //fileName being passed in as the argument. Then the str will be writen to the file using the
     //file object << operator. Afterwards, the function will end when true has been returned.
     bool write_to_file(std::string fileName, std::string str);
+
+    //@append_to_file()
+    //@param: std::string fileName, std::string str
+    //@return: true(Always)
+    //@description: The fileName will be modified by using checkFileType helper function.
+    //Then an ofstream object will be created with std::ios::app as the second argument. 
+    //Then theofstream.open() will be called with the modified fileName being passed in as the arguement.
+    //The parameter str will then be written to the file using << operator. 
+    bool append_to_file(std::string fileName, std::string str);
 }
 #endif
