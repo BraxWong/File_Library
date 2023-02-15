@@ -202,11 +202,58 @@ namespace file {
         }
         return false;
     }
+
+
+    bool find_and_replace(std::string fileName, std::string origin, std::string replacement){
+      std::string str;
+      fileName = checkFileType(fileName);
+      //Check if the file exists within the repo folder
+      //if(!checkFileExists(fileName)) {
+         // return false;
+      //}
+
+      //Read the entire file and store it as a string at str
+      std::ifstream infile;
+      infile.open(fileName);
+      std::getline(infile,str);
+
+      std::cout << str << "\n";
+      //Find the origin within str and store the ptr 
+      auto ptr = str.find(origin);
+
+      //run it until it is the end of the string
+      while(ptr != std::string::npos){
+         // Replace the word at the ptr location for specific length with the replacement word.
+         str.replace(ptr,origin.length(),replacement);
+         //           ^        ^              ^
+         //           |        |              |
+         //       Location   length    replacement word
+         
+         //Keep looking for the word starting from ptr location 
+         ptr = str.find(origin,      ptr);
+         //                ^          ^
+         //                |          |
+         //             target     location  
+      }
+      std::ofstream ofile;
+      ofile.open(fileName);
+      ofile << str;
+      return true;
+    }
+
+    bool write_to_file(std::string fileName, std::string str){
+      std::ofstream file;
+      fileName = checkFileType(fileName);
+      file.open(fileName);
+      file << str;
+      return true;
+    }
 }
 
 int main() {
 
-    std::cout <<  file::checkFileExists("Check") << "\n";
+    //std::cout <<  file::find_and_replace("Check","123","456") << "\n";
+    std::cout << file::write_to_file("Check","Bskdlajfkjdhasfjdasjfhdasjfjdsah");
     return 0;
 
 } 

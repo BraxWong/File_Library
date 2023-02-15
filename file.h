@@ -72,5 +72,17 @@ namespace file {
     //and it will return the fileName string. An ifstream object will be created by passing in the fileName parameter. Then ifstream.good()
     //will be used to check if the file exists or not. Return the true if the file exists, false if the file does not exists.
     bool checkFileExists(std::string fileName);
+
+
+    bool find_and_replace(std::string fileName, std::string origin, std::string replacement);
+
+    //@write_to_file
+    //@param: std::string fileName, std::string str
+    //@return: true(Always)
+    //@description: The fileName will be modified by using checkFileType helper function.
+    //Then an ofstream object will be created and ofstream.open() will be called with the modified
+    //fileName being passed in as the argument. Then the str will be writen to the file using the
+    //file object << operator. Afterwards, the function will end when true has been returned.
+    bool write_to_file(std::string fileName, std::string str);
 }
 #endif
