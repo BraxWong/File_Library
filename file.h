@@ -94,12 +94,13 @@ namespace file {
     //The parameter str will then be written to the file using << operator. 
     bool append_to_file(std::string fileName, std::string str);
 
-    //@storeFileAsString()
+    //@storeFileAsVector()
     //@param: std::string fileName
-    //@return: std::string result(fileName data)
+    //@return: std::vector<std::string> result(fileName data)
     //@description: The fileName will be modified by using checkFileType helper function.
     //Then an ifstream object will be created with the ifstream.open() being called with the modified 
-    //fileName being passed in as the argument. The result will then be returned.
-    std::string storeFileAsString(std::string fileName);
+    //fileName being passed in as the argument. File data will be push_back into the
+    //vector, then the result will then be returned.
+    std::vector<std::string> storeFileAsVector(std::string fileName);
 }
 #endif

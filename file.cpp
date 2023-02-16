@@ -205,39 +205,33 @@ namespace file {
 
 
     bool find_and_replace(std::string fileName, std::string origin, std::string replacement){
-      std::string str;
+      std::vector<std::string> str;
       fileName = checkFileType(fileName);
-      //Check if the file exists within the repo folder
-      //if(!checkFileExists(fileName)) {
-         // return false;
-      //}
 
-      //Read the entire file and store it as a string at str
-      std::ifstream infile;
-      infile.open(fileName);
-      std::getline(infile,str);
-
-      std::cout << str << "\n";
-      //Find the origin within str and store the ptr 
-      auto ptr = str.find(origin);
-
-      //run it until it is the end of the string
-      while(ptr != std::string::npos){
-         // Replace the word at the ptr location for specific length with the replacement word.
-         str.replace(ptr,origin.length(),replacement);
-         //           ^        ^              ^
-         //           |        |              |
-         //       Location   length    replacement word
-         
-         //Keep looking for the word starting from ptr location 
-         ptr = str.find(origin,      ptr);
-         //                ^          ^
-         //                |          |
-         //             target     location  
+      //Uses find_word() to find out if the origin word is present within the file
+      //Also makes sure origin and replacement are not the same word
+      if(!find_word("Check",origin) || origin == replacement){
+        return false;
       }
+
+      //Uses storeFileAsVector() to convert file data to a vector
+      str = storeFileAsVector("Check");
+      //Iterating through the vector to check if the origin word is present 
+      for(unsigned long i = 0; i < str.size(); ++i){
+        if(str[i] == origin){
+          str[i] = replacement;
+        } 
+      }
+      //Opening the file
       std::ofstream ofile;
       ofile.open(fileName);
-      ofile << str;
+      //Writing the data back to the file with replaced data
+      for(unsigned long i = 0; i < str.size(); ++i){
+        ofile << str[i];
+        if(str[i] != "\n"){
+          ofile << " ";
+        }
+      }
       return true;
     }
 
@@ -261,8 +255,9 @@ namespace file {
     }
 
 
-    std::string storeFileAsString(std::string fileName){
-      std::string line, word, temp, result;
+    std::vector<std::string> storeFileAsVector(std::string fileName){
+      std::string line, word, temp;
+      std::vector<std::string> result;
       fileName = checkFileType(fileName);
       std::ifstream ifile;
       ifile.open(fileName);
@@ -270,9 +265,10 @@ namespace file {
       while(ifile.good()){
         std::getline(ifile,line);
         std::stringstream ss(line);
-        while(std::getline(ss,temp,'\n')){
-          result+=temp;
+        while(std::getline(ss,temp,' ')){
+          result.push_back(temp);
         }
+        result.push_back("\n");
       }
       return result;
     }
@@ -280,8 +276,8 @@ namespace file {
 
 int main() {
 
-    std::cout << file::storeFileAsString("Check") << "\n";
-    //std::cout <<  file::find_and_replace("Check","123","456") << "\n";
+    //std::cout << file::storeFileAsString("Check") << "\n";
+    std::cout <<  file::find_and_replace("Check","456","123") << "\n";
     //std::cout << file::write_to_file("Check","Bskdlajfkjdhasfjdasjfhdasjfjdsah");
     //file::append_to_file("Check", "Hi My name is what?");
     return 0;
