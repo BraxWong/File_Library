@@ -75,7 +75,7 @@ namespace file {
 
     //@find_and_replace
     //@param: std::string fileName, std::string fileType, std::string origin, std::string replacement
-    //@return: false(can't find origin from the file || origin == replacement), true(function executed successfully)
+    //@return: false(can't find origin from the file || origin == replacement || the file does not exists), true(function executed successfully)
     //@description: The fileName and fileType parameters will be passed into checkFileType and it will return the fileName string.
     //Within the for loop, find_word() helper function will then used to find out if the origin word is present within the file,
     //it will also check whether origin and replacement are the same word. If either of them is true, the function will terminate and 

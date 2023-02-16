@@ -205,20 +205,23 @@ namespace file {
 
     bool find_and_replace(std::string fileName, std::string fileType, std::string origin, std::string replacement){
       std::vector<std::string> str;
-      fileName = checkFileType(fileName, fileType);
-
-      //Uses find_word() to find out if the origin word is present within the file
-      //Also makes sure origin and replacement are not the same word
-      if(!find_word("Check",origin, fileType) || origin == replacement){
+      //Checks if the file exists or not
+      if(!checkFileExists(fileName, fileType)){
         return false;
       }
-
+      fileName = checkFileType(fileName, fileType);
+      //Uses find_word() to find out if the origin word is present within the file
+      //Also makes sure origin and replacement are not the same word
+      if(!find_word("Check",fileType, origin) || origin == replacement){
+        return false;
+      }
       //Uses storeFileAsVector() to convert file data to a vector
       str = storeFileAsVector("Check", fileType);
       //Iterating through the vector to check if the origin word is present
       for(unsigned long i = 0; i < str.size(); ++i){
         if(str[i] == origin){
           str[i] = replacement;
+          break;
         }
       }
       //Opening the file
