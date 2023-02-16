@@ -219,6 +219,7 @@ namespace file {
       for(unsigned long i = 0; i < str.size(); ++i){
         if(str[i] == origin){
           str[i] = replacement;
+          break;
         }
       }
       //Opening the file
