@@ -259,13 +259,31 @@ namespace file {
       std::cout << str << "\nHas been appended to file " << fileName << " successfully.\n";
       return true;
     }
+
+
+    std::string storeFileAsString(std::string fileName){
+      std::string line, word, temp, result;
+      fileName = checkFileType(fileName);
+      std::ifstream ifile;
+      ifile.open(fileName);
+      
+      while(ifile.good()){
+        std::getline(ifile,line);
+        std::stringstream ss(line);
+        while(std::getline(ss,temp,'\n')){
+          result+=temp;
+        }
+      }
+      return result;
+    }
 }
 
 int main() {
 
+    std::cout << file::storeFileAsString("Check") << "\n";
     //std::cout <<  file::find_and_replace("Check","123","456") << "\n";
     //std::cout << file::write_to_file("Check","Bskdlajfkjdhasfjdasjfhdasjfjdsah");
-    file::append_to_file("Check", "Hi My name is what?");
+    //file::append_to_file("Check", "Hi My name is what?");
     return 0;
 
 } 

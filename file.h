@@ -90,8 +90,16 @@ namespace file {
     //@return: true(Always)
     //@description: The fileName will be modified by using checkFileType helper function.
     //Then an ofstream object will be created with std::ios::app as the second argument. 
-    //Then theofstream.open() will be called with the modified fileName being passed in as the arguement.
+    //Then the ofstream.open() will be called with the modified fileName being passed in as the arguement.
     //The parameter str will then be written to the file using << operator. 
     bool append_to_file(std::string fileName, std::string str);
+
+    //@storeFileAsString()
+    //@param: std::string fileName
+    //@return: std::string result(fileName data)
+    //@description: The fileName will be modified by using checkFileType helper function.
+    //Then an ifstream object will be created with the ifstream.open() being called with the modified 
+    //fileName being passed in as the argument. The result will then be returned.
+    std::string storeFileAsString(std::string fileName);
 }
 #endif
