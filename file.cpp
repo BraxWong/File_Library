@@ -147,14 +147,13 @@ namespace file {
 
     bool createNewFile(std::string fileName, std::string fileType) {
 
-        char illegalChar[] = {'#','%','&','{','}','<','>','*','?','/',' ','$','!',':','@','+','`','|','=','"'};
+        std::string illegalCharTmp = "#%&{}<>*?/$!:@+`|=""";
+        std::set<char> illegalChar(illegalCharTmp.begin(), illegalCharTmp.end());
         //Checks for illegal character within the file name
-        for(int i = 0; i < 19; ++i){
-          for(unsigned long j = 0; j < fileName.length(); ++j) {
-            if(fileName[j] == illegalChar[i]){
-              std::cout << "Error: Illegal character detected. " << illegalChar[i] << " is not allowed in the file name.\n";
-              return false;
-            }
+        for(unsigned long j = 0; j < fileName.length(); ++j) {
+          if(illegalChar.find(fileName[j]) != illegalChar.end()){
+            std::cout << "Error: Illegal character detected. " << fileName[j] << " is not allowed in the file name.\n";
+            return false;
           }
         }
         //Checks for special rules
@@ -275,5 +274,4 @@ namespace file {
       return result;
     }
 }
-
 
