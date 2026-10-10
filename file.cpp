@@ -4,6 +4,39 @@ using namespace file;
 
 namespace file {
 
+    bool checkFileExists(std::string fileName, std::string fileType){
+      bool fileExists = false;
+      fileName = checkFileType(fileName, fileType);
+      if(fileName != "-1"){
+        std::ifstream file(fileName);
+        if(file.good()){
+            fileExists = true;
+        }
+      }
+      return fileExists;
+    }
+
+    std::vector<std::string> storeFileAsVector(std::string fileName, std::string fileType){
+      std::string line, word, temp;
+      std::vector<std::string> result;
+      fileName = checkFileType(fileName, fileType);
+      if(fileName != "-1"){
+        std::ifstream ifile;
+        ifile.open(fileName);
+
+        while(ifile.good()){
+          std::getline(ifile,line);
+          std::stringstream ss(line);
+          while(std::getline(ss,temp,' ')){
+            result.push_back(temp);
+          }
+          result.push_back("\n");
+        }
+      }
+      return result;
+    }
+
+
     bool print_file(std::string fileName, std::string fileType){
 
 
@@ -148,15 +181,15 @@ namespace file {
     }
 
     bool createNewFile(std::string fileName, std::string fileType) {
-        bool fileCreated = true;
-        char illegalChar[] = {'#','%','&','{','}','<','>','*','?','/',' ','$','!',':','@','+','`','|','=','"'};
+
+      bool fileCreated = true;
+        std::string illegalCharTmp = "#%&{}<>*?/$!:@+`|=""";
+        std::set<char> illegalChar(illegalCharTmp.begin(), illegalCharTmp.end());
         //Checks for illegal character within the file name
-        for(int i = 0; i < 19; ++i){
-          for(unsigned long j = 0; j < fileName.length(); ++j) {
-            if(fileName[j] == illegalChar[i]){
-              std::cout << "Error: Illegal character detected. " << illegalChar[i] << " is not allowed in the file name.\n";
-              fileCreated = false;
-            }
+        for(unsigned long j = 0; j < fileName.length(); ++j) {
+          if(illegalChar.find(fileName[j]) != illegalChar.end()){
+            std::cout << "Error: Illegal character detected. " << fileName[j] << " is not allowed in the file name.\n";
+            return false;
           }
         }
         //Checks for special rules
@@ -174,36 +207,21 @@ namespace file {
 
     std::string checkFileType(std::string fileName, std::string fileType){
 
-
         //Checks if the user input is missing a '.'
         if(fileType[0] != '.'){
 
             fileType = '.' + fileType;
 
         }
-
-        //Checks for txt
-        if(fileType[1] == 't' && fileType[2] == 'x' && fileType[3] == 't' && fileType.length() == 4){
-            return fileName + fileType;
-        }
-        else if(fileType[1] == 'c' && fileType[2] == 's' && fileType[3] == 'v' && fileType.length() == 4){
-            return fileName + fileType;
+        if((fileType.find("txt") != std::string::npos && fileType.length() == 4) || (fileType.find("csv") != std::string::npos && fileType.length() == 4)) {
+          return fileName + fileType;
         }
         else {
-            return NULL;
+            return "-1";
         }
     }
 
-    bool checkFileExists(std::string fileName, std::string fileType){
-        bool fileExists = false;
-        fileName = checkFileType(fileName, fileType);
-        std::ifstream file(fileName);
-        if(file.good()){
-            fileExists = true;
-        }
-        return fileExists;
-    }
-
+    
 
     bool find_and_replace(std::string fileName, std::string fileType, std::string origin, std::string replacement){
       std::vector<std::string> str;
@@ -212,78 +230,68 @@ namespace file {
         return false;
       }
       fileName = checkFileType(fileName, fileType);
-      //Uses find_word() to find out if the origin word is present within the file
-      //Also makes sure origin and replacement are not the same word
-      if(!find_word("Check",fileType, origin) || origin == replacement){
-        return false;
-      }
-      //Uses storeFileAsVector() to convert file data to a vector
-      str = storeFileAsVector("Check", fileType);
-      //Iterating through the vector to check if the origin word is present
-      for(unsigned long i = 0; i < str.size(); ++i){
-        if(str[i] == origin){
-          str[i] = replacement;
-          break;
+      if (fileName != "-1") {
+        //Uses find_word() to find out if the origin word is present within the file
+        //Also makes sure origin and replacement are not the same word
+        if(!find_word("Check",fileType, origin) || origin == replacement){
+          return false;
         }
-      }
-      //Opening the file
-      std::ofstream ofile;
-      ofile.open(fileName);
-      //Writing the data back to the file with replaced data
-      for(unsigned long i = 0; i < str.size(); ++i){
-        ofile << str[i];
-        if(str[i] != "\n"){
-          ofile << " ";
+        //Uses storeFileAsVector() to convert file data to a vector
+        str = storeFileAsVector("Check", fileType);
+        //Iterating through the vector to check if the origin word is present
+        for(unsigned long i = 0; i < str.size(); ++i){
+          if(str[i] == origin){
+            str[i] = replacement;
+            break;
+          }
         }
+        //Opening the file
+        std::ofstream ofile;
+        ofile.open(fileName);
+        //Writing the data back to the file with replaced data
+        for(unsigned long i = 0; i < str.size(); ++i){
+          ofile << str[i];
+          if(str[i] != "\n"){
+            ofile << " ";
+          }
+        }
+        return true;
       }
-      return true;
+      return false;
     }
 
     bool write_to_file(std::string fileName, std::string fileType, std::string str){
       std::ofstream file;
       fileName = checkFileType(fileName, fileType);
-      file.open(fileName);
-      file << str;
-      return true;
+      if(fileName != "-1"){
+        file.open(fileName);
+        file << str;
+        return true;
+      }
+      return false;
     }
-
 
     bool append_to_file(std::string fileName, std::string fileType, std::string str){
       fileName = checkFileType(fileName, fileType);
-      std::ofstream ofile;
-      ofile.open(fileName, std::ios::app);
-      ofile << str;
-      ofile.close();
-      std::cout << str << "\nHas been appended to file " << fileName << " successfully.\n";
-      return true;
-    }
-
-
-    std::vector<std::string> storeFileAsVector(std::string fileName, std::string fileType){
-      std::string line, word, temp;
-      std::vector<std::string> result;
-      fileName = checkFileType(fileName, fileType);
-      std::ifstream ifile;
-      ifile.open(fileName);
-
-      while(ifile.good()){
-        std::getline(ifile,line);
-        std::stringstream ss(line);
-        while(std::getline(ss,temp,' ')){
-          result.push_back(temp);
-        }
-        result.push_back("\n");
+      if (fileName != "-1"){
+        std::ofstream ofile;
+        ofile.open(fileName, std::ios::app);
+        ofile << str;
+        ofile.close();
+        std::cout << str << "\nHas been appended to file " << fileName << " successfully.\n";
+        return true;
       }
-      return result;
+      return false;
     }
 
+    
     bool compress_file(std::string fileName) {
       bool file_compressed = false;
       std::fstream file;
-      file.open(fn,std::ios::in);
+      file.open(fileName,std::ios::in);
       if(file.good()) {
         std::string command = "gzip -k " + fileName;
-        std::system(command);
+        std::system(command.c_str());
         file_compressed = true;
       }
       return file_compressed;
@@ -292,14 +300,12 @@ namespace file {
     bool decompress_file(std::string fileName){
       bool file_decompressed = false;
       std::fstream file;
-      file.open(fn,std::ios::in);
+      file.open(fileName,std::ios::in);
       if(file.good()) {
         std::string command = "gzip -d " + fileName;
-        std::system(command);
+        std::system(command.c_str());
         file_decompressed = true;
       }
       return file_decompressed;
     }
 }
-
-
