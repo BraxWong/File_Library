@@ -111,5 +111,18 @@ namespace file {
     //fileName being passed in as the argument. File data will be push_back into the
     //vector, then the result will then be returned.
     std::vector<std::string> storeFileAsVector(std::string fileName, std::string fileType);
+
+    //@compress_file()
+    //@param: std::string fileName
+    //@return: true(When the file is successfully compressed), false (when the file is not found)
+    //Description: The system will first look for the file, if it exists, then it will use system command "gzip -k " + fileName to compress the file.
+    bool compress_file(std::string fileName)
+
+
+    //@decompress_file()
+    //@param: std::string fileName
+    //@return: true(When the file is successfully decompressed), false (when the file is not found)
+    //Description: The system will first look for the file, if it exists, then it will use system command "gzip -d " + fileName to decompress the file.
+    bool compress_file(std::string fileName)
 }
 #endif

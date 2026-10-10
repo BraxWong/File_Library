@@ -1,4 +1,5 @@
 #include "file.h"
+#include <cstdlib>
 using namespace file;
 
 namespace file {
@@ -66,7 +67,7 @@ namespace file {
 
                 std::cout << word << "\n";
 
-            }
+             }
 
         }
 
@@ -76,36 +77,37 @@ namespace file {
     }
 
        bool find_word(std::string fileName, std::string fileType, std::string target) {
+          bool word_found = false;
+          std::string fn, line, word;
+          fn = checkFileType(fileName, fileType);
+          std::fstream file;
+          file.open(fn ,std::ios::in);
 
-        std::string fn, line, word;
-        fn = checkFileType(fileName, fileType);
-        std::fstream file;
-        file.open(fn ,std::ios::in);
+          while(file.good()){
 
-        while(file.good()){
+              std::getline(file,line);
+              std::stringstream s(line);
 
-            std::getline(file,line);
-            std::stringstream s(line);
+              while(std::getline(s,word,' ')){
 
-            while(std::getline(s,word,' ')){
+                  if(word == target){
 
-                if(word == target){
+                      std::cout << target << " is found\n";
+                      word_found = true;
 
-                    std::cout << target << " is found\n";
-                    return true;
+                  }
 
-                }
+              }
 
-            }
+          }
 
-        }
-
-        std::cout << target << " is not found\n";
-        return false;
+          std::cout << target << " is not found\n";
+          return word_found;
 
     }
 
     bool find_sentence(std::string fileName, std::string fileType, std::string target){
+      bool sentence_found = false;
       //Storing the sentence into a vector of string
       std::vector<std::string> targetVector;
       std::stringstream ss(target);
@@ -130,7 +132,7 @@ namespace file {
                     count++;
                     if(count == static_cast<int> (targetVector.size())) {
                       std::cout << target << " is found\n";
-                      return true;
+                      sentence_found = true;
                     }
                 }
 
@@ -142,32 +144,32 @@ namespace file {
 
       }
       std::cout << target << " is not found\n";
-      return false;
+      return sentence_found;
     }
 
     bool createNewFile(std::string fileName, std::string fileType) {
-
+        bool fileCreated = true;
         char illegalChar[] = {'#','%','&','{','}','<','>','*','?','/',' ','$','!',':','@','+','`','|','=','"'};
         //Checks for illegal character within the file name
         for(int i = 0; i < 19; ++i){
           for(unsigned long j = 0; j < fileName.length(); ++j) {
             if(fileName[j] == illegalChar[i]){
               std::cout << "Error: Illegal character detected. " << illegalChar[i] << " is not allowed in the file name.\n";
-              return false;
+              fileCreated = false;
             }
           }
         }
         //Checks for special rules
         if(fileName[0] == ' ' || fileName[fileName.length()] == ' ' || fileName[0] == '.' || fileName[fileName.length()] == '.' || fileName[0] == '-' || fileName[fileName.length()] == '-' || fileName[0] == '_' || fileName[fileName.length()] == '_' ){
           std::cout << "Space, period, hyphen, or underline is detected at the start or end of filename.\n";
-          return false;
+          fileCreated = false;
         }
 
         fileName = checkFileType(fileName, fileType);
         //Creates the file
         std::ofstream newFile(fileName);
         newFile.close();
-        return true;
+        return fileCreated;
     }
 
     std::string checkFileType(std::string fileName, std::string fileType){
@@ -193,13 +195,13 @@ namespace file {
     }
 
     bool checkFileExists(std::string fileName, std::string fileType){
-
+        bool fileExists = false;
         fileName = checkFileType(fileName, fileType);
         std::ifstream file(fileName);
         if(file.good()){
-            return true;
+            fileExists = true;
         }
-        return false;
+        return fileExists;
     }
 
 
@@ -273,6 +275,30 @@ namespace file {
         result.push_back("\n");
       }
       return result;
+    }
+
+    bool compress_file(std::string fileName) {
+      bool file_compressed = false;
+      std::fstream file;
+      file.open(fn,std::ios::in);
+      if(file.good()) {
+        std::string command = "gzip -k " + fileName;
+        std::system(command);
+        file_compressed = true;
+      }
+      return file_compressed;
+    }
+
+    bool decompress_file(std::string fileName){
+      bool file_decompressed = false;
+      std::fstream file;
+      file.open(fn,std::ios::in);
+      if(file.good()) {
+        std::string command = "gzip -d " + fileName;
+        std::system(command);
+        file_decompressed = true;
+      }
+      return file_decompressed;
     }
 }
 
